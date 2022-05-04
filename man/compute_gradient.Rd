@@ -29,7 +29,7 @@ definitions, where a \code{1} for row \code{j} and column \code{k} means that KO
 is in the definition for module \code{k}.}
 }
 \value{
-The gradient of the parameters given the data.
+The gradient of negative log likelihood for a certain set of parameters and data.
 }
 \description{
 The function computes the gradient of the negative log likelihood based on the input

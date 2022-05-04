@@ -19,7 +19,7 @@
 #' definitions, where a \code{1} for row \code{j} and column \code{k} means that KO \code{j}
 #' is in the definition for module \code{k}.
 #'
-#' @return The gradient of the parameters given the data.
+#' @return The gradient of negative log likelihood for a certain set of parameters and data.
 #'
 #' @importFrom stats rbinom
 #'
