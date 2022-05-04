@@ -1,0 +1,18 @@
+Package: ModulePackage
+Title: Runs Testing for Modules
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Sarah",
+            family = "Teichman",
+            role = c("aut", "cre"),
+            email = "teichs@uw.edu")
+Description: This package includes functions to run testing for metabolism data.
+License: BSD 3-Clause
+Imports: 
+    stats
+Encoding: UTF-8
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.1.2
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
