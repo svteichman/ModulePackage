@@ -17,6 +17,8 @@
 #' @param KO_mod_mat A matrix with \code{r} rows and \code{m} columns that encodes module
 #' definitions, where a \code{1} for row \code{j} and column \code{k} means that KO \code{j}
 #' is in the definition for module \code{k}.
+#' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+#' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
 #'
 #' @return The negative log likelihood of the parameters given the data.
 #'
@@ -26,7 +28,7 @@
 #' compute_log_lik(0.8, 0.1, beta, dat$x, dat$y, dat$KO_mod_mat)
 #'
 #' @export
-compute_log_lik <- function(a, epsilon, beta, x, y, KO_mod_mat) {
+compute_log_lik <- function(a, epsilon, beta, x, y, KO_mod_mat, use_expit = FALSE) {
   # number of modules
   m <- ncol(KO_mod_mat)
   # number of KOs
@@ -43,7 +45,7 @@ compute_log_lik <- function(a, epsilon, beta, x, y, KO_mod_mat) {
   for (i in 1:n) {
     log_lik <- log_lik +
       log(sum_lambda_space(a, epsilon, beta, x, y,
-                                    sample_space, i, KO_max_mat))
+                                    sample_space, i, KO_max_mat, use_expit))
   }
   return(-log_lik)
 }

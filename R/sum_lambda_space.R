@@ -23,6 +23,8 @@
 #' in the row \code{ss} and column \code{j} is \code{1} if for the point in the sample space
 #' given by \code{ss}, the maximum over all \code{lambda} values with indices in the set
 #' \code{D_j} is \code{1}, and \code{0} otherwise.
+#' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+#' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
 #'
 #' @return The likelihood product for the given sample \code{i}.
 #'
@@ -34,14 +36,14 @@
 #' sum_lambda_space(0.8, 0.1, beta, dat$x, dat$y, sample_space, 1, KO_max_mat)
 #'
 #' @export
-sum_lambda_space <- function(a, epsilon, beta, x, y, sample_space, i, KO_max_mat) {
+sum_lambda_space <- function(a, epsilon, beta, x, y, sample_space, i, KO_max_mat, use_expit = FALSE) {
   # initialize sum
   lik_sum <- 0
   # add likelihood for each point in sample space of lambda for sample i
   for (ss in 1:nrow(sample_space)) {
     lik_sum <- lik_sum +
       compute_lik_prod(a, epsilon, beta, x, y,
-                       sample_space[ss, ], i, KO_max_mat[ss, ])
+                       sample_space[ss, ], i, KO_max_mat[ss, ], use_expit)
   }
   return(lik_sum)
 }

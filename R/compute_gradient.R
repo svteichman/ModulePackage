@@ -18,6 +18,8 @@
 #' @param KO_mod_mat A matrix with \code{r} rows and \code{m} columns that encodes module
 #' definitions, where a \code{1} for row \code{j} and column \code{k} means that KO \code{j}
 #' is in the definition for module \code{k}.
+#' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+#' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
 #'
 #' @return The gradient of negative log likelihood for a certain set of parameters and data.
 #'
@@ -29,7 +31,7 @@
 #' compute_gradient(0.8, 0.1, beta, dat$x, dat$y, dat$KO_mod_mat)
 #'
 #' @export
-compute_gradient <- function(a, epsilon, beta, x, y, KO_mod_mat) {
+compute_gradient <- function(a, epsilon, beta, x, y, KO_mod_mat, use_expit = FALSE) {
   # number of modules
   m <- ncol(KO_mod_mat)
   # number of KOs
@@ -45,6 +47,15 @@ compute_gradient <- function(a, epsilon, beta, x, y, KO_mod_mat) {
   # compute max l_{.k} for each KO for each point in sample space
   KO_max_mat <- transform_lambda_space(m, r, sample_space, KO_mod_mat)
 
+  # if parameters coming in need to be transformed to [0, 1], do expit
+  # transformation
+  if (use_expit) {
+    a_untran <- a
+    epsilon_untran <- epsilon
+    a <- expit(a)
+    epsilon <- expit(epsilon)
+  }
+
   # gradient with respect to each parameter is sum over gradient for that sample
   for (i in 1:nrow(x)) {
     # get x[i, ] %*% beta vector
@@ -54,8 +65,8 @@ compute_gradient <- function(a, epsilon, beta, x, y, KO_mod_mat) {
     # loop over points in sample space for lambda
     for (ss in 1:nrow(sample_space)) {
       # get likelihood for sample i and lambda
-      num_term <- compute_lik_prod(a, epsilon, beta, x, y,
-                                 sample_space[ss, ], i, KO_max_mat[ss, ])
+      num_term <- compute_lik_prod(a, epsilon, beta, x, y, sample_space[ss, ],
+                                 i, KO_max_mat[ss, ])
       # add num_term to denominator
       denom <- denom + num_term
       # get derivatives for a and epsilon
@@ -94,6 +105,11 @@ compute_gradient <- function(a, epsilon, beta, x, y, KO_mod_mat) {
       }
     }
     grad <- grad + num/denom
+  }
+  # if using expit, apply chain rule to partial derivatives for a and epsilon
+  if (use_expit) {
+    grad[1] <- grad[1] * exp(-a_untran)/((1+exp(-a_untran))^2)
+    grad[2] <- grad[2] * exp(-epsilon_untran)/((1+exp(-epsilon_untran))^2)
   }
   return(-grad)
 }

@@ -4,7 +4,7 @@
 \alias{compute_gradient}
 \title{Computes Gradient}
 \usage{
-compute_gradient(a, epsilon, beta, x, y, KO_mod_mat)
+compute_gradient(a, epsilon, beta, x, y, KO_mod_mat, use_expit = FALSE)
 }
 \arguments{
 \item{a}{A number in \code{[0, 1]} that represents the probability of observing a KO given
@@ -27,6 +27,9 @@ and \code{0} otherwise.}
 \item{KO_mod_mat}{A matrix with \code{r} rows and \code{m} columns that encodes module
 definitions, where a \code{1} for row \code{j} and column \code{k} means that KO \code{j}
 is in the definition for module \code{k}.}
+
+\item{use_expit}{If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+and \code{expit(epsilons)}. Set to \code{FALSE} by default.}
 }
 \value{
 The gradient of negative log likelihood for a certain set of parameters and data.

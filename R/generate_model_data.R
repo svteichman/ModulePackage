@@ -10,12 +10,14 @@
 #' then this will be randomly generated based on the data.
 #' @param p The number of covariates.
 #' @param a A number in \code{[0, 1]} that represents the probability of observing a KO given
-#'  that one of the modules it is included in is present.
+#' that one of the modules it is included in is present.
 #' @param epsilon A number in \code{[0, 1]} that represents the probability of observing a
-#'  KO given that none of the modules it is included in are present.
+#' KO given that none of the modules it is included in are present.
 #' @param beta A matrix with \code{p+1} rows and \code{m} columns. The first row are
-#'  intercepts for each module, and the element in row \code{i} and column \code{k} represents
-#'  the coefficient for the covariate \code{x_{i+1}} and module \code{k}.
+#' intercepts for each module, and the element in row \code{i} and column \code{k} represents
+#' the coefficient for the covariate \code{x_{i+1}} and module \code{k}.
+#' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+#' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
 #'
 #' @return A list including \code{x}, \code{y}, and \code{KO_mod_mat}.
 #'
@@ -24,10 +26,16 @@
 #' generate_model_data(n = 4, m = 2, r = 5, p = 1, a = 0.8, epsilon = 0.1, beta = beta)
 #'
 #' @export
-generate_model_data <- function(seed = NULL, n, m, r, KO_mod_mat = NULL, p, a, epsilon, beta) {
+generate_model_data <- function(seed = NULL, n, m, r, KO_mod_mat = NULL,
+                                p, a, epsilon, beta, use_expit = FALSE) {
   # if seed if given, set it
   if (!is.null(seed)) {
     set.seed(seed)
+  }
+  # if parameters coming in need to be transformed to [0, 1], do expit transformation
+  if (use_expit) {
+    a <- expit(a)
+    epsilon <- expit(epsilon)
   }
   # if module definitions aren't given in KO_mod_mat, generate them randomly
   if (is.null(KO_mod_mat)) {

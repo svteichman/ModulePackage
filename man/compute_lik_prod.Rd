@@ -4,7 +4,7 @@
 \alias{compute_lik_prod}
 \title{Compute Piece of Likelihood}
 \usage{
-compute_lik_prod(a, epsilon, beta, x, y, lambda, i, KO_max)
+compute_lik_prod(a, epsilon, beta, x, y, lambda, i, KO_max, use_expit = FALSE)
 }
 \arguments{
 \item{a}{A number in \code{[0, 1]} that represents the probability of observing a KO given
@@ -33,6 +33,9 @@ in which element \code{k} is \code{1} if module \code{k} is present in sample \c
 \item{KO_max}{A vector of length \code{r} based on the value lambda in which a \code{1}
 for element \code{j} means that the maximum over all lambda values with indices in the
 set \code{D_j} is \code{1}, and a \code{0} means that the maximum is \code{0}.}
+
+\item{use_expit}{If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+and \code{expit(epsilons)}. Set to \code{FALSE} by default.}
 }
 \value{
 The likelihood product for the given sample \code{i} and lambda vector.

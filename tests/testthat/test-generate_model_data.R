@@ -22,3 +22,12 @@ test_that("KO_mod_mat has correct dimensions", {
   expect_equal(dim(res$KO_mod_mat), c(5, 2))
 })
 
+test_that("use_expit working", {
+  beta <- matrix(c(rep(1, 2), 1, 5), nrow = 2)
+  res1 <- generate_model_data(seed = 1, n = 4, m = 2, r = 5, p = 1, a = 0.8,
+                             epsilon = 0.1, beta = beta)
+  res2 <- generate_model_data(seed = 1, n = 4, m = 2, r = 5, p = 1, a = log(0.8/.2),
+                              epsilon = log(0.1/0.9), beta = beta,
+                              use_expit = TRUE)
+  expect_equal(res1, res2)
+})

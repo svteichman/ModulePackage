@@ -4,7 +4,17 @@
 \alias{sum_lambda_space}
 \title{Sums Over Sample Space for Lambda}
 \usage{
-sum_lambda_space(a, epsilon, beta, x, y, sample_space, i, KO_max_mat)
+sum_lambda_space(
+  a,
+  epsilon,
+  beta,
+  x,
+  y,
+  sample_space,
+  i,
+  KO_max_mat,
+  use_expit = FALSE
+)
 }
 \arguments{
 \item{a}{A number in \code{[0, 1]} that represents the probability of observing a KO given
@@ -34,6 +44,9 @@ a point in the sample space of \code{lambda} and each column represents a KO. Th
 in the row \code{ss} and column \code{j} is \code{1} if for the point in the sample space
 given by \code{ss}, the maximum over all \code{lambda} values with indices in the set
 \code{D_j} is \code{1}, and \code{0} otherwise.}
+
+\item{use_expit}{If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+and \code{expit(epsilons)}. Set to \code{FALSE} by default.}
 }
 \value{
 The likelihood product for the given sample \code{i}.

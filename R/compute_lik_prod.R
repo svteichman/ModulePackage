@@ -22,6 +22,8 @@
 #' @param KO_max A vector of length \code{r} based on the value lambda in which a \code{1}
 #' for element \code{j} means that the maximum over all lambda values with indices in the
 #' set \code{D_j} is \code{1}, and a \code{0} means that the maximum is \code{0}.
+#' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+#' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
 #'
 #' @return The likelihood product for the given sample \code{i} and lambda vector.
 #'
@@ -34,7 +36,7 @@
 #' compute_lik_prod(0.8, 0.1, beta, x, y, lambda, 2, KO_max)
 #'
 #' @export
-compute_lik_prod <- function(a, epsilon, beta, x, y, lambda, i, KO_max) {
+compute_lik_prod <- function(a, epsilon, beta, x, y, lambda, i, KO_max, use_expit = FALSE) {
   # number of modules
   m <- length(lambda)
   # number of KOs
@@ -44,6 +46,10 @@ compute_lik_prod <- function(a, epsilon, beta, x, y, lambda, i, KO_max) {
   # initialize product
   prod <- 1
   # product over term in the likelihood that includes a and epsilon
+  if (use_expit) {
+    a <- expit(a)
+    epsilon <- expit(epsilon)
+  }
   for (j in 1:r) {
     val <- (a^y[i, j]*(1-a)^(1-y[i, j]))^(KO_max[j])*
       (epsilon^y[i, j]*(1-epsilon)^(1-y[i, j]))^(1-KO_max[j])

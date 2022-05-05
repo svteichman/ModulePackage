@@ -13,7 +13,8 @@ generate_model_data(
   p,
   a,
   epsilon,
-  beta
+  beta,
+  use_expit = FALSE
 )
 }
 \arguments{
@@ -39,6 +40,9 @@ KO given that none of the modules it is included in are present.}
 \item{beta}{A matrix with \code{p+1} rows and \code{m} columns. The first row are
 intercepts for each module, and the element in row \code{i} and column \code{k} represents
 the coefficient for the covariate \code{x_{i+1}} and module \code{k}.}
+
+\item{use_expit}{If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
+and \code{expit(epsilons)}. Set to \code{FALSE} by default.}
 }
 \value{
 A list including \code{x}, \code{y}, and \code{KO_mod_mat}.

@@ -71,3 +71,12 @@ test_that("correct sum", {
          (expit(x[4, ] %*% beta[, 1])) * (expit(x[4, ] %*% beta[, 2])))))
   expect_equal(round(res, 1), round(as.numeric(sum_res), 1))
 })
+
+test_that("use_expit working", {
+  dat <- generate_basic_example()
+  beta <- matrix(1:4, nrow = 2)
+  res1 <- compute_log_lik(0.8, 0.1, beta, dat$x, dat$y, dat$KO_mod_mat)
+  res2 <- compute_log_lik(log(0.8/.2), log(0.1/0.9), beta, dat$x, dat$y,
+                           dat$KO_mod_mat, use_expit = TRUE)
+  expect_equal(res1, res2)
+})
