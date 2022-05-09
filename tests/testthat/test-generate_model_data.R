@@ -31,3 +31,11 @@ test_that("use_expit working", {
                               use_expit = TRUE)
   expect_equal(res1, res2)
 })
+
+test_that("cont_x working", {
+  beta <- matrix(c(rep(1, 2), 1, 5), nrow = 2)
+  res <- generate_model_data(seed = 1, n = 4, m = 2, r = 5, p = 1, a = 0.8,
+                             epsilon = 0.1, beta = beta,
+                             cont_x = TRUE)
+  expect_false((res$x[1, 2] - round(res$x[1, 2])) == 0)
+})

@@ -18,8 +18,13 @@
 #' the coefficient for the covariate \code{x_{i+1}} and module \code{k}.
 #' @param use_expit If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
 #' and \code{expit(epsilons)}. Set to \code{FALSE} by default.
+#' @param cont_x If \code{TRUE}, then generate continuous variables in
+#' design matrix \code{x} instead of binary. Set to \code{FALSE} by default.
 #'
 #' @return A list including \code{x}, \code{y}, and \code{KO_mod_mat}.
+#'
+#' @importFrom stats rbinom
+#' @importFrom stats rnorm
 #'
 #' @examples
 #' beta <- matrix(c(rep(1, 2), 1, 5), nrow = 2)
@@ -27,7 +32,8 @@
 #'
 #' @export
 generate_model_data <- function(seed = NULL, n, m, r, KO_mod_mat = NULL,
-                                p, a, epsilon, beta, use_expit = FALSE) {
+                                p, a, epsilon, beta, use_expit = FALSE,
+                                cont_x = FALSE) {
   # if seed if given, set it
   if (!is.null(seed)) {
     set.seed(seed)
@@ -60,7 +66,11 @@ generate_model_data <- function(seed = NULL, n, m, r, KO_mod_mat = NULL,
   x <- matrix(nrow = n, ncol = (p + 1))
   x[, 1] <- 1
   for (i in 1:p) {
-    x[, 1 + p] <- rbinom(n, 1, 0.5)
+    if (cont_x) {
+      x[, 1 + p] <- rnorm(n)
+    } else {
+      x[, 1 + p] <- rbinom(n, 1, 0.5)
+    }
   }
 
   # generate outcome data based on the generative model

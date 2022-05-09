@@ -14,7 +14,8 @@ generate_model_data(
   a,
   epsilon,
   beta,
-  use_expit = FALSE
+  use_expit = FALSE,
+  cont_x = FALSE
 )
 }
 \arguments{
@@ -43,6 +44,9 @@ the coefficient for the covariate \code{x_{i+1}} and module \code{k}.}
 
 \item{use_expit}{If \code{TRUE}, then replace \code{a} and \code{epsilon} with \code{expit(a)}
 and \code{expit(epsilons)}. Set to \code{FALSE} by default.}
+
+\item{cont_x}{If \code{TRUE}, then generate continuous variables in
+design matrix \code{x} instead of binary. Set to \code{FALSE} by default.}
 }
 \value{
 A list including \code{x}, \code{y}, and \code{KO_mod_mat}.
